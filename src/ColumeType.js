@@ -14,14 +14,21 @@ const columnsTitleTAW = [
     {
         title: 'Số lượng',
         dataIndex: 'quantityTAW',
-        width: '15%',
+        width: '10%',
         editable: true,
     },
     {
         title: 'Trọng số',
         dataIndex: 'weightTAW',
-        width: '15%',
+        width: '10%',
         editable: false,
+    },
+    {
+        title: 'Kết quả',
+        dataIndex: 'resultTAW',
+        width: '10%',
+        editable: false,
+        render: (text, record) => record.quantityTAW ? record.quantityTAW * record.weightTAW : 0,
     }
 ];
 
@@ -90,13 +97,13 @@ const columnsTitleEF = [
     {
         title: 'Số thứ tự',
         dataIndex: 'orderEF',
-        width: '10%',
+        width: '5%',
         editable: false,
     },
     {
         title: 'Các hệ số tác động',
         dataIndex: 'impactFactorsEF',
-        width: '50%',
+        width: '40%',
         editable: false,
     },
     {
@@ -117,7 +124,13 @@ const columnsTitleEF = [
         width: '10%',
         editable: false,
         render: (text, record) => record.ratingValueEF ? record.ratingValueEF * record.weightEF : 0,
-    }
+    },
+    {
+        title: 'Độ ổn định kinh nghiệm',
+        dataIndex: 'ratingExEF',
+        width: '10%',
+        editable: true,
+    },
 ];
 
 export const columnConfigurations = {

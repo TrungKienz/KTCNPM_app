@@ -4,21 +4,21 @@ const dataTAW = [
         actorTAW: 'Đơn giản',
         descriptionTAW: 'Thuộc loại giao diện của chương trình',
         quantityTAW: 0,
-        weightTAW: 3,
+        weightTAW: 1,
     },
     {
         key: 2,
         actorTAW: 'Trung bình',
         descriptionTAW: 'Giao diện tương tác hoặc phục vụ một giao thức hoạt động',
         quantityTAW: 0,
-        weightTAW: 6,
+        weightTAW: 2,
     },
     {
         key: 3,
         actorTAW: 'Phức tạp',
         descriptionTAW: 'Giao diện đồ họa',
         quantityTAW: 0,
-        weightTAW: 9,
+        weightTAW: 3,
     },
 ];
 
@@ -160,6 +160,7 @@ const dataEF = [
         impactFactorsEF: 'Có áp dụng qui trình phát triển phần mềm theo mẫu RUP và có hiểu biết về RUP hoặc quy trình phát triển phần mềm tương đương',
         weightEF: 1.5,
         ratingValueEF: 0,
+        ratingExEF: 0,
     },
     {
         key: 2,
@@ -167,6 +168,7 @@ const dataEF = [
         impactFactorsEF: 'Có kinh nghiệm về ứng dụng tương tự',
         weightEF: 0.5,
         ratingValueEF: 0,
+        ratingExEF: 0,
     },
     {
         key: 3,
@@ -174,6 +176,7 @@ const dataEF = [
         impactFactorsEF: 'Có kinh nghiệm về hướng đối tượng',
         weightEF: 1,
         ratingValueEF: 5,
+        ratingExEF: 0,
     },
     {
         key: 4,
@@ -181,6 +184,7 @@ const dataEF = [
         impactFactorsEF: 'Có khả năng lãnh đạo Nhóm',
         weightEF: 0.5,
         ratingValueEF: 0,
+        ratingExEF: 0,
     },
     {
         key: 5,
@@ -188,6 +192,7 @@ const dataEF = [
         impactFactorsEF: 'Tính chất năng động',
         weightEF: 1,
         ratingValueEF: 0,
+        ratingExEF: 0,
     },
     {
         key: 6,
@@ -195,6 +200,7 @@ const dataEF = [
         impactFactorsEF: 'Độ ổn định của các yêu cầu',
         weightEF: 2,
         ratingValueEF: 0,
+        ratingExEF: 0,
     },
     {
         key: 7,
@@ -202,6 +208,7 @@ const dataEF = [
         impactFactorsEF: 'Sử dụng các nhân viên làm bán thời gian',
         weightEF: -1,
         ratingValueEF: 0,
+        ratingExEF: 0,
     },
     {
         key: 8,
@@ -209,14 +216,33 @@ const dataEF = [
         impactFactorsEF: 'Dùng ngôn ngữ lập trình loại khó',
         weightEF: -1,
         ratingValueEF: 0,
+        ratingExEF: 0,
     },
 ];
+
+const resultData = {
+    TAWpoint: 0,
+    EFWpoint: 0,
+    TBFpoint: 0,
+    TFWpoint: 0,
+    UUCPpoint: 0,
+    TCFpoint: 0,
+    EFpoint: 0,
+    ESpoint: 0,
+    AUCPpoint: 0,
+    Ppoint: 0,
+    Epoint: 0,
+    Hpoint: 0,
+    Gpoint: 0,
+}
+
 
 export const dataConfigurations = {
     dataTAW,
     dataTBF,
     dataTCF,
-    dataEF
+    dataEF,
+    resultData,
 };
 
 export default dataConfigurations;

@@ -36,7 +36,7 @@ const App = () => {
             background: colorBgContainer,
           }}
         >
-          <h1 style={{textAlign: 'center'}}>Phần mềm hỗ trợ công nghệ phần mềm</h1>
+          <h1 style={{textAlign: 'center'}}>Phần mềm hỗ trợ tính toán chi phí phần mềm</h1>
         </Header>
         <Content
           style={{

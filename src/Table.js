@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Popconfirm, Table, Typography } from 'antd';
+import { Button, Form, Input, Popconfirm, Table, Typography } from 'antd';
 import columnConfigurations from './ColumeType';
 import dataConfigurations from './DataConfigure';
+import calculatorService from './service';
 
 const EditableCell = ({
   editing,
@@ -75,22 +76,80 @@ const TableContent = ({tableType}) => {
     }
   };
 
+  var dataType = 'dataTAW'
 
   useEffect(() => {
     if (tableType === 'TAW') { 
       setColumnType(columnConfigurations.columnsTitleTAW);
       setData(dataConfigurations.dataTAW);
+      dataType = 'dataTAW';
     } else if (tableType === 'TBF') {
       setColumnType(columnConfigurations.columnsTitleTBF);
       setData(dataConfigurations.dataTBF);
+      dataType = 'dataTBF';
     } else if (tableType === 'TCF') {
       setColumnType(columnConfigurations.columnsTitleTCF);
       setData(dataConfigurations.dataTCF);
+      dataType = 'dataTCF';
     } else {
       setColumnType(columnConfigurations.columnsTitleEF);
       setData(dataConfigurations.dataEF);
+      dataType = 'dataEF';
     }
-  }, [tableType, dataConfigurations]); 
+  }, [tableType, dataConfigurations]);
+
+  const calFunction = (data) => {
+    const jsonData = JSON.stringify(data);
+    localStorage.setItem(dataType, jsonData);
+    var resultCalculator = 0;
+
+    const dataResultString = localStorage.getItem("resultData");
+    const dataResult = dataResultString ? JSON.parse(dataResultString) : {};
+    
+    if (tableType === 'TAW') { 
+      resultCalculator = calculatorService.calTAW(data);
+      if(dataResult != {}) {
+        dataResult.TAWpoint = resultCalculator;
+        localStorage.setItem("resultData", JSON.stringify(dataResult));
+      } else {
+        dataConfigurations.resultData.TAWpoint = resultCalculator;
+        localStorage.setItem("resultData", JSON.stringify(dataConfigurations.resultData));
+      }
+    } else if (tableType === 'TBF') {
+      resultCalculator = calculatorService.calTBF(data);
+      if(dataResult != {}) {
+        dataResult.TBFpoint = resultCalculator;
+        localStorage.setItem("resultData", JSON.stringify(dataResult));
+      } else {
+        dataConfigurations.resultData.TBFpoint = resultCalculator;
+        localStorage.setItem("resultData", JSON.stringify(dataConfigurations.resultData));
+      }
+    } else if (tableType === 'TCF') {
+      resultCalculator = calculatorService.calTFW(data);
+      var TFWpoint = 0.6 + (0.01*resultCalculator)
+      if(dataResult != {}) {
+        dataResult.TCFpoint = resultCalculator;
+        dataResult.TFWpoint = TFWpoint;
+        localStorage.setItem("resultData", JSON.stringify(dataResult));
+      } else {
+        dataConfigurations.resultData.TCFpoint = resultCalculator;
+        dataConfigurations.resultData.TFWpoint = TFWpoint;
+        localStorage.setItem("resultData", JSON.stringify(dataConfigurations.resultData));
+      }
+    } else {
+      resultCalculator = calculatorService.calTFW(data);
+      if(dataResult != {}) {
+        dataResult.EFpoint = resultCalculator;
+        localStorage.setItem("resultData", JSON.stringify(dataResult));
+      } else {
+        dataConfigurations.resultData.EFpoint = resultCalculator;
+        localStorage.setItem("resultData", JSON.stringify(dataConfigurations.resultData));
+      }
+    }
+
+    console.log(resultCalculator);
+    console.log(data)
+  }
 
   const columns = [
     ...columnType,
@@ -136,8 +195,24 @@ const TableContent = ({tableType}) => {
       }),
     };
   });
+
   return (
     <Form form={form} component={false}>
+      <div
+        style={{
+          position: 'sticky',
+          top: 0,
+          zIndex: 1,
+          width: '100%',
+          display: 'flex',
+          alignItems: 'right',
+          justifyContent: 'right',
+          padding: 20,
+        }}
+      >
+        <Button type="primary" onClick={() => calFunction(data)}>Tính toán</Button>
+      </div>
+      
       <Table
         components={{
           body: {
