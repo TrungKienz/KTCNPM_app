@@ -28,10 +28,78 @@ const calTFW = (data) => {
     return result;  
 }
 
+const calEFW = (data) => {
+    var result = 0;
+    for( var i = 0; i < data.length; i++) {
+        result += (parseFloat(data[i].weightEF) * parseFloat(data[i].ratingValueEF));
+    }
+    return result;
+}
+
+const calES = (data) => {
+    var result = 0;
+    for (var i = 0; i < data.length; i++) {
+        result += parseFloat(data[i].ratingExEF);
+    }
+    return result;
+}
+
+const calP = (data) => {
+    var ESpoint = calES(data);
+    if (ESpoint < 1) {
+        return 48;
+    } else if ( ESpoint < 3 && ESpoint >= 1) {
+        return 32;
+    } else {
+        return 20;
+    }
+}
+
+const calAverageSalaryPerMonth = (data) => {
+    var sumEmployee = 0;
+    var sumSalary = 0;
+
+    for(var i = 0; i < data.length; i++) {
+        sumEmployee += parseInt(data[i].numberEmployeeH);
+        sumSalary += (parseInt(data[i].wageH)*parseInt(data[i].numberEmployeeH));
+    }
+
+    console.log(sumSalary/sumEmployee)
+
+    return sumSalary/sumEmployee;
+}
+
+const displayVNDType = (number) => {
+    const numberString = String(number);
+    const numberArray = numberString.split('');
+
+    let result = '';
+    let count = 0;
+
+    for (let i = numberArray.length - 1; i >= 0; i--) {
+        result = numberArray[i] + result;
+
+        count++;
+
+        if (count === 3 && i !== 0) {
+            result = ',' + result;
+            count = 0;
+        }
+    }
+
+    return result;
+}
+
+
 export const calculatorService = {
     calTAW,
     calTBF,
-    calTFW
+    calTFW,
+    calEFW,
+    calES,
+    calP,
+    calAverageSalaryPerMonth,
+    displayVNDType
 }
 
 export default calculatorService;

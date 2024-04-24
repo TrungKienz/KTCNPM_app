@@ -133,11 +133,40 @@ const columnsTitleEF = [
     },
 ];
 
+const columnsTitleH = [
+    {
+        title: 'Số thứ tự',
+        dataIndex: 'orderH',
+        width: '5%',
+        editable: false,
+    },
+    {
+        title: 'Mức lương/tháng (đồng)',
+        dataIndex: 'wageH',
+        width: '30%',
+        editable: true,
+    },
+    {
+        title: 'Số lượng cán bộ số',
+        dataIndex: 'numberEmployeeH',
+        width: '15%',
+        editable: true,
+    },
+    {
+        title: 'Kết quả',
+        dataIndex: 'resultTCF',
+        width: '15%',
+        editable: false,
+        render: (text, record) => record.numberEmployeeH ? record.numberEmployeeH * record.wageH : 0,
+    },
+];
+
 export const columnConfigurations = {
     columnsTitleTAW,
     columnsTitleTBF,
     columnsTitleTCF,
-    columnsTitleEF
+    columnsTitleEF,
+    columnsTitleH
 };
 
 export default columnConfigurations;

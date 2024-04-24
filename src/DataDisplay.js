@@ -1,10 +1,23 @@
 import React from 'react';
 import { Descriptions, Tag } from 'antd';
+import calculatorService from './service';
 
 const DataDisplay = () => {
   const dataResultString = localStorage.getItem("resultData");
   const dataResult = dataResultString ? JSON.parse(dataResultString) : {};
   console.log(dataResult)
+
+  const TAW = dataResult.TAWpoint;
+  const TBF = dataResult.TBFpoint;
+  const UUCP = dataResult.TAWpoint + dataResult.TBFpoint;
+  const TCF = 0.6 + (0.01*dataResult.TFWpoint);
+  const EF = 1.4 - 0.03*dataResult.EFWpoint;
+  const AUCP = UUCP * TCF * EF;
+  const P = dataResult.Ppoint;
+  const E = 10/6 * AUCP;
+  const H = (dataResult.AVGSalaryMonth/20)/8;
+  const G = 1.4 * E * P * H;
+
   const items = [
     {
       label: 'I. Tính điểm trường hợp sử dụng (Usecase)',
@@ -18,17 +31,17 @@ const DataDisplay = () => {
       },
         children: (
           <>
-            1. Điểm actor (TAW): <Tag color="#1677ff">{dataResult.TAWpoint}</Tag>
+            1. Điểm actor (TAW): <b>{TAW ? TAW.toFixed(0) : 0}</b>
             <br />
-            2. Điểm usecase (TBF): <Tag color="#1677ff">{dataResult.TBFpoint}</Tag>
+            2. Điểm usecase (TBF): <b>{TBF ? TBF.toFixed(0) : 0}</b>
             <br />
-            3. Tính điểm UUCP (UUCP = TAW + TBF): <Tag color="#1677ff">{dataResult.TAWpoint + dataResult.TBFpoint}</Tag>
+            3. Tính điểm UUCP (UUCP = TAW + TBF): <b>{UUCP ? UUCP.toFixed(0) : 0}</b>
             <br />
-            4. Hệ số phức tạp về KT-CN (TCF) (TCF = 0,6 + (0,01 x TFW)): <Tag color="#1677ff">{0.6 + (0.01*dataResult.TFWpoint)}</Tag>
+            4. Hệ số phức tạp về KT-CN (TCF) (TCF = 0,6 + (0,01 x TFW)): <b>{TCF ? TCF.toFixed(2) : 0}</b>
             <br />
-            5. Hệ số phức tạp về môi trường (EF) (EF = 1,4 + (-0,03 x EFW)):  <Tag color="#1677ff">{dataResult.EFpoint}</Tag>
+            5. Hệ số phức tạp về môi trường (EF) (EF = 1,4 + (-0,03 x EFW)):  <b>{EF ? EF.toFixed(3) : 0}</b>
             <br />
-            6. Tính điểm AUCP (AUCP = UUCP x TCF x EF): <Tag color="#1677ff">{dataResult.TAWpoint * dataResult.TBFpoint * dataResult.EFpoint}</Tag>
+            6. Tính điểm AUCP (AUCP = UUCP x TCF x EF): <b>{AUCP ? AUCP.toFixed(3) : 0}</b>
           </>
         ),
     },
@@ -44,7 +57,7 @@ const DataDisplay = () => {
       },
         children: (
           <>
-            Giá trị (P : người/giờ/AUCP): <Tag color="#1677ff">{dataResult.Ppoint}</Tag>
+            Giá trị (P : người/giờ/AUCP): <b>{P ? P.toFixed(0) : 0}</b>
           </>
         ),
     },
@@ -60,7 +73,7 @@ const DataDisplay = () => {
       },
         children: (
           <>
-            Giá trị (E = 10/6 x AUCP): <Tag color="#1677ff">{dataResult.Epoint}</Tag>
+            Giá trị (E = 10/6 x AUCP): <b>{E ? E.toFixed(3) : 0}</b>
           </>
         ),
     },
@@ -76,7 +89,7 @@ const DataDisplay = () => {
       },
         children: (
           <>
-            Giá trị (H: người/giờ): <Tag color="#1677ff">{dataResult.Hpoint}</Tag>
+            Giá trị (H: người/giờ): <b>{H ? calculatorService.displayVNDType(H.toFixed(0)) : 0}</b>
           </>
         ),
     },
@@ -92,7 +105,7 @@ const DataDisplay = () => {
       },
       children: (
           <>
-            Giá trị (G = 1,4 x E x P x H): <Tag color="#1677ff">{1.4*dataResult.Epoint*dataResult.Ppoint*dataResult.Hpoint}</Tag>
+            Giá trị (G = 1,4 x E x P x H): <b>{G ? calculatorService.displayVNDType(G.toFixed(0)) : 0} đồng</b>
           </>
       ),
     },

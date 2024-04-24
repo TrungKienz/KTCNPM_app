@@ -175,7 +175,7 @@ const dataEF = [
         orderEF: 3,
         impactFactorsEF: 'Có kinh nghiệm về hướng đối tượng',
         weightEF: 1,
-        ratingValueEF: 5,
+        ratingValueEF: 0,
         ratingExEF: 0,
     },
     {
@@ -220,20 +220,25 @@ const dataEF = [
     },
 ];
 
+// const dataH = [
+//     {
+//         key: 1,
+//         orderH: 1,
+//         wageH: 0,
+//         numberEmployeeH: 0,
+//     },
+// ];
+
 const resultData = {
     TAWpoint: 0,
     EFWpoint: 0,
     TBFpoint: 0,
     TFWpoint: 0,
     UUCPpoint: 0,
-    TCFpoint: 0,
     EFpoint: 0,
     ESpoint: 0,
-    AUCPpoint: 0,
     Ppoint: 0,
-    Epoint: 0,
-    Hpoint: 0,
-    Gpoint: 0,
+    AVGSalaryMonth: 0,
 }
 
 
@@ -243,6 +248,7 @@ export const dataConfigurations = {
     dataTCF,
     dataEF,
     resultData,
+    // dataH
 };
 
 export default dataConfigurations;

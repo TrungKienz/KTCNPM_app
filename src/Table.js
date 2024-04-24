@@ -74,33 +74,56 @@ const TableContent = ({tableType}) => {
     } catch (errInfo) {
       console.log('Validate Failed:', errInfo);
     }
-  };
+  };  
 
-  var dataType = 'dataTAW'
+  var getLocalData = []
 
   useEffect(() => {
     if (tableType === 'TAW') { 
       setColumnType(columnConfigurations.columnsTitleTAW);
-      setData(dataConfigurations.dataTAW);
-      dataType = 'dataTAW';
+      getLocalData =  JSON.parse(localStorage.getItem(`data${tableType}`));
+      setData(getLocalData ? getLocalData : dataConfigurations.dataTAW);
     } else if (tableType === 'TBF') {
       setColumnType(columnConfigurations.columnsTitleTBF);
-      setData(dataConfigurations.dataTBF);
-      dataType = 'dataTBF';
+      getLocalData =  JSON.parse(localStorage.getItem(`data${tableType}`));
+      setData(getLocalData ? getLocalData :dataConfigurations.dataTBF);
     } else if (tableType === 'TCF') {
       setColumnType(columnConfigurations.columnsTitleTCF);
-      setData(dataConfigurations.dataTCF);
-      dataType = 'dataTCF';
-    } else {
+      getLocalData =  JSON.parse(localStorage.getItem(`data${tableType}`));
+      setData(getLocalData ? getLocalData :dataConfigurations.dataTCF);
+    } else if (tableType === 'EF'){
       setColumnType(columnConfigurations.columnsTitleEF);
-      setData(dataConfigurations.dataEF);
-      dataType = 'dataEF';
+      getLocalData = JSON.parse(localStorage.getItem(`data${tableType}`)) ;
+      setData(getLocalData ? getLocalData :dataConfigurations.dataEF);
+    } else {
+      setColumnType(columnConfigurations.columnsTitleH);
+      setData(dataConfigurations.dataH);
     }
   }, [tableType, dataConfigurations]);
 
+
   const calFunction = (data) => {
     const jsonData = JSON.stringify(data);
-    localStorage.setItem(dataType, jsonData);
+    switch(tableType) {
+      case 'TAW':
+        localStorage.setItem('dataTAW', jsonData);
+        break;
+      case 'TBF':
+        localStorage.setItem('dataTBF', jsonData);
+        break;
+      case 'TCF':
+        localStorage.setItem('dataTCF', jsonData);
+        break;
+      case 'EF':
+        localStorage.setItem('dataEF', jsonData);
+        break;
+      case 'H':
+        localStorage.setItem('dataH', jsonData);
+        break;
+      default:
+        break;
+    }
+
     var resultCalculator = 0;
 
     const dataResultString = localStorage.getItem("resultData");
@@ -108,7 +131,7 @@ const TableContent = ({tableType}) => {
     
     if (tableType === 'TAW') { 
       resultCalculator = calculatorService.calTAW(data);
-      if(dataResult != {}) {
+      if(dataResult != null) {
         dataResult.TAWpoint = resultCalculator;
         localStorage.setItem("resultData", JSON.stringify(dataResult));
       } else {
@@ -117,7 +140,7 @@ const TableContent = ({tableType}) => {
       }
     } else if (tableType === 'TBF') {
       resultCalculator = calculatorService.calTBF(data);
-      if(dataResult != {}) {
+      if(dataResult != null) {
         dataResult.TBFpoint = resultCalculator;
         localStorage.setItem("resultData", JSON.stringify(dataResult));
       } else {
@@ -126,23 +149,26 @@ const TableContent = ({tableType}) => {
       }
     } else if (tableType === 'TCF') {
       resultCalculator = calculatorService.calTFW(data);
-      var TFWpoint = 0.6 + (0.01*resultCalculator)
-      if(dataResult != {}) {
-        dataResult.TCFpoint = resultCalculator;
-        dataResult.TFWpoint = TFWpoint;
+      if(dataResult != null) {
+        dataResult.TFWpoint = resultCalculator;
         localStorage.setItem("resultData", JSON.stringify(dataResult));
       } else {
-        dataConfigurations.resultData.TCFpoint = resultCalculator;
-        dataConfigurations.resultData.TFWpoint = TFWpoint;
+        dataConfigurations.resultData.TFWpoint = resultCalculator;
         localStorage.setItem("resultData", JSON.stringify(dataConfigurations.resultData));
       }
     } else {
-      resultCalculator = calculatorService.calTFW(data);
-      if(dataResult != {}) {
-        dataResult.EFpoint = resultCalculator;
+      resultCalculator = calculatorService.calEFW(data);
+      var resultValueP = calculatorService.calP(data);
+      var resultValueES = calculatorService.calES(data);
+      if(dataResult != null) {
+        dataResult.EFWpoint = resultCalculator;
+        dataResult.Ppoint = resultValueP;
+        dataResult.ESpoint = resultValueES;
         localStorage.setItem("resultData", JSON.stringify(dataResult));
       } else {
         dataConfigurations.resultData.EFpoint = resultCalculator;
+        dataConfigurations.resultData.Ppoint = resultValueP;
+        dataConfigurations.resultData.ESpoint = resultValueES;
         localStorage.setItem("resultData", JSON.stringify(dataConfigurations.resultData));
       }
     }
