@@ -69,6 +69,17 @@ const calAverageSalaryPerMonth = (data) => {
     return sumSalary/sumEmployee;
 }
 
+const calSumSalary = (data) => {
+    var sumSalary = 0;
+
+    for(var i = 0; i < data.length; i++) {
+        sumSalary += (parseInt(data[i].wageH)*parseInt(data[i].numberEmployeeH));
+    }
+
+    return sumSalary;
+}
+
+
 const displayVNDType = (number) => {
     const numberString = String(number);
     const numberArray = numberString.split('');
@@ -91,6 +102,10 @@ const displayVNDType = (number) => {
 }
 
 
+const randomKey = () => {
+    return Math.round(Math.random()*1000000)
+}
+
 export const calculatorService = {
     calTAW,
     calTBF,
@@ -99,7 +114,9 @@ export const calculatorService = {
     calES,
     calP,
     calAverageSalaryPerMonth,
-    displayVNDType
+    calSumSalary,
+    displayVNDType,
+    randomKey
 }
 
 export default calculatorService;

@@ -85,6 +85,7 @@ const EditableCell = ({
 const AddRowTable = ({tableType}) => {
   const [dataSource, setDataSource] = useState([]);
   const [count, setCount] = useState(1);
+  const [dataCalculatorResult, setDataCalculatorResult] = useState();
   const handleDelete = (key) => {
     const newData = dataSource.filter((item) => item.key !== key);
     setDataSource(newData);
@@ -92,12 +93,12 @@ const AddRowTable = ({tableType}) => {
 
   var getLocalData = [];
 
-  // useEffect(() => {
-  //   if (tableType === 'H') { 
-  //     getLocalData =  JSON.parse(localStorage.getItem(`dataAVGSalary`));
-  //     setDataSource(getLocalData ? getLocalData : []);
-  //   }
-  // },[]);
+  useEffect(() => {
+    if (tableType === 'H') { 
+      getLocalData =  JSON.parse(localStorage.getItem(`dataAVGSalary`));
+      setDataSource(getLocalData ? getLocalData : []);
+    }
+  },[]);
 
   var defaultColumns = [];
 
@@ -121,7 +122,7 @@ const AddRowTable = ({tableType}) => {
 
   const handleAdd = () => {
     const newData = {
-      key: count,
+      key: calculatorService.randomKey(),
       orderH: count,
       wageH: 0,
       numberEmployeeH: 0,
@@ -166,6 +167,13 @@ const AddRowTable = ({tableType}) => {
     localStorage.setItem('dataAVGSalary', JSON.stringify(data));
     const resultDataString = localStorage.getItem('resultData');
     const resultData = resultDataString ? JSON.parse(resultDataString) : {};
+    var AVGSalaryDay = averageSalary/20/8;
+    var SumSalary = calculatorService.calSumSalary(data);
+    setDataCalculatorResult({
+      "AVGSalaryMonth": calculatorService.displayVNDType(averageSalary),
+      "AVGSalaryDay":  calculatorService.displayVNDType(AVGSalaryDay),
+      "SumSalary": calculatorService.displayVNDType(SumSalary),
+    })
 
     if (resultData != null) {
         resultData.AVGSalaryMonth = averageSalary;
@@ -191,17 +199,30 @@ const AddRowTable = ({tableType}) => {
             padding: 20,
             }}
         >
-            <Button
-                onClick={handleAdd}
-                type="primary"
-                style={{
-                    marginBottom: 16,
-                    marginRight: 10,
-                }}
-            >
-                Thêm 1 hàng
-            </Button>
-            <Button type="primary" onClick={() => calFunction(dataSource)} style={{marginLeft: 10}}>Tính toán</Button>
+          {tableType === 'H' ? (
+            <>
+              <div style={{ paddingRight: 20, paddingTop: 5 }}>
+                Tổng chi lương/tháng: <b>{dataCalculatorResult ? dataCalculatorResult.SumSalary : 0} đồng</b>
+              </div>
+              <div style={{ paddingRight: 20, paddingTop: 5 }}>
+                Mức lương bình quân/người/tháng: <b>{dataCalculatorResult ? dataCalculatorResult.AVGSalaryMonth : 0} đồng</b>
+              </div>
+              <div style={{ paddingRight: 20, paddingTop: 5 }}>
+                Mức lương bình quân 1 người/1 giờ: <b>{dataCalculatorResult ? dataCalculatorResult.AVGSalaryDay : 0} đồng</b>
+              </div>
+            </>
+          ) : (<div/>)}
+          <Button
+            onClick={handleAdd}
+            type="primary"
+            style={{
+              marginBottom: 16,
+              marginRight: 10,
+            }}
+          >
+            Thêm 1 hàng
+          </Button>
+          <Button type="primary" onClick={() => calFunction(dataSource)} style={{marginLeft: 10}}>Tính toán</Button>
         </div>
       <Table
         components={components}

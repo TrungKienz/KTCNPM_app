@@ -43,6 +43,7 @@ const TableContent = ({tableType}) => {
   const [data, setData] = useState([]);
   const [columnType, setColumnType] = useState([]);
   const [editingKey, setEditingKey] = useState('');
+  const [dataCalculatorResult, setDataCalculatorResult] = useState({});
   const isEditing = (record) => record.key === editingKey;
   const edit = (record) => {
     form.setFieldsValue({
@@ -131,6 +132,9 @@ const TableContent = ({tableType}) => {
     
     if (tableType === 'TAW') { 
       resultCalculator = calculatorService.calTAW(data);
+      setDataCalculatorResult({
+        "TAW": resultCalculator,
+      });
       if(dataResult != null) {
         dataResult.TAWpoint = resultCalculator;
         localStorage.setItem("resultData", JSON.stringify(dataResult));
@@ -140,6 +144,9 @@ const TableContent = ({tableType}) => {
       }
     } else if (tableType === 'TBF') {
       resultCalculator = calculatorService.calTBF(data);
+      setDataCalculatorResult({
+        "TBF": resultCalculator,
+      });
       if(dataResult != null) {
         dataResult.TBFpoint = resultCalculator;
         localStorage.setItem("resultData", JSON.stringify(dataResult));
@@ -149,6 +156,11 @@ const TableContent = ({tableType}) => {
       }
     } else if (tableType === 'TCF') {
       resultCalculator = calculatorService.calTFW(data);
+      var TCF = resultCalculator * 0.01 + 0.6;
+      setDataCalculatorResult({
+        "TFW": resultCalculator,
+        "TCF": TCF,
+      });
       if(dataResult != null) {
         dataResult.TFWpoint = resultCalculator;
         localStorage.setItem("resultData", JSON.stringify(dataResult));
@@ -160,6 +172,15 @@ const TableContent = ({tableType}) => {
       resultCalculator = calculatorService.calEFW(data);
       var resultValueP = calculatorService.calP(data);
       var resultValueES = calculatorService.calES(data);
+      var resultValueEF = (1.4 - 0.03*resultCalculator).toFixed(4)
+      const newDataCalculatorResult = {
+        "EFW": resultCalculator,
+        "ES": resultValueES,
+        "P": resultValueP,
+        "EF": resultValueEF,
+      };
+      
+      setDataCalculatorResult(newDataCalculatorResult);
       if(dataResult != null) {
         dataResult.EFWpoint = resultCalculator;
         dataResult.Ppoint = resultValueP;
@@ -236,6 +257,43 @@ const TableContent = ({tableType}) => {
           padding: 20,
         }}
       >
+        {tableType === 'TAW' ? (
+          <div style={{ paddingRight: 20, paddingTop: 5 }}>
+            Kết quả TAW: <b>{dataCalculatorResult.TAW ? dataCalculatorResult.TAW : 0}</b>
+          </div>
+        ) : tableType === 'TBF' ? (
+          <div style={{ paddingRight: 20, paddingTop: 5 }}>
+            Kết quả TBF: <b>{dataCalculatorResult.TBF ? dataCalculatorResult.TBF : 0}</b>
+          </div>
+        ) : tableType === 'TCF' ? (
+          <>
+            <div style={{ paddingRight: 20, paddingTop: 5 }}>
+              Kết quả hệ số KT-CN (TFW): <b>{dataCalculatorResult.TFW ? dataCalculatorResult.TFW : 0}</b>
+            </div>
+            <div style={{ paddingRight: 20, paddingTop: 5 }}>
+              Kết quả hệ số phức tạp về KT-CN (TCF): <b>{dataCalculatorResult.TCF ? dataCalculatorResult.TCF : 0}</b>
+            </div>
+          </>
+        ) : tableType === 'EF' ? (
+          <>
+            <div style={{ paddingRight: 20, paddingTop: 5 }}>
+              Kết quả hệ số tác động môi trường và nhóm làm việc (EFW): <b>{dataCalculatorResult.EFW ? dataCalculatorResult.EFW : 0}</b>
+            </div>
+            <div style={{ paddingRight: 20, paddingTop: 5 }}>
+              Kết quả hệ số phức tạp về môi trường (EF): <b>{dataCalculatorResult.EF ? dataCalculatorResult.EF : 0}</b>
+            </div>
+            <div style={{ paddingRight: 20, paddingTop: 5 }}>
+              Kết quả độ ổn định kinh nghiệm (ES): <b>{dataCalculatorResult.ES  ? dataCalculatorResult.ES : 0}</b>
+            </div>
+            <div style={{ paddingRight: 20, paddingTop: 5 }}>
+              Kết quả nội suy thời gian lao động (P): <b>{dataCalculatorResult.P ? dataCalculatorResult.P : 0}</b>
+            </div>
+          </>
+          
+        ) : (
+          {}
+        )}
+
         <Button type="primary" onClick={() => calFunction(data)}>Tính toán</Button>
       </div>
       

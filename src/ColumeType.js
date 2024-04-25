@@ -134,12 +134,12 @@ const columnsTitleEF = [
 ];
 
 const columnsTitleH = [
-    {
-        title: 'Số thứ tự',
-        dataIndex: 'orderH',
-        width: '5%',
-        editable: false,
-    },
+    // {
+    //     title: 'Số thứ tự',
+    //     dataIndex: 'orderH',
+    //     width: '5%',
+    //     editable: false,
+    // },
     {
         title: 'Mức lương/tháng (đồng)',
         dataIndex: 'wageH',
