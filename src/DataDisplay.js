@@ -1,5 +1,5 @@
 import React from 'react';
-import { Descriptions, Tag } from 'antd';
+import { Button, Descriptions, Tag } from 'antd';
 import calculatorService from './service';
 
 const DataDisplay = () => {
@@ -110,20 +110,39 @@ const DataDisplay = () => {
       ),
     },
   ];
+  const handleReload = () => {
+    window.location.reload()
+  }
+
   return (
-    <Descriptions
-      title="Kết quả"
-      bordered
-      column={{
-          xs: 2,
-          sm: 2,
-          md: 2,
-          lg: 2,
-          xl: 2,
-          xxl: 2,
-      }}
-      items={items}
-    />
+    <>
+      <div
+        style={{
+          top: 0,
+          zIndex: 1,
+          width: '100%',
+          display: 'flex',
+          alignItems: 'right',
+          justifyContent: 'right',
+          padding: 10,
+        }}
+      >
+        <Button type='primary' onClick={handleReload}>Cập nhật</Button>
+      </div>
+      <Descriptions
+        title="Kết quả"
+        bordered
+        column={{
+            xs: 2,
+            sm: 2,
+            md: 2,
+            lg: 2,
+            xl: 2,
+            xxl: 2,
+        }}
+        items={items}
+      />
+    </>
   )
 };
 export default DataDisplay;
